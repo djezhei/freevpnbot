@@ -48,23 +48,20 @@ async def command_start_handler(message: Message) -> None:
 @dp.callback_query(lambda c: c.data == 'back')
 async def back_callback(callback_query: types.CallbackQuery):
     await callback_query.answer()
-    user = s.get(User, callback_query.from_user.id)
-    message_text = f'Привет, {callback_query.from_user.username}'
+    user = s.get(User, message.from_user.id)
+    message_text = f'Привет, {message.from_user.username}'
     if user:
         if user.is_active:
-            message_text += (f'\nПодписка <b>активна до <u>'
-                             f'{datetime.utcfromtimestamp(user.end_on).strftime("%d.%m.%Y")}</u></b>')
+            message_text += (f'\nПодписка <b>активна еще <u>'
+                             f'{datetime.utcfromtimestamp(user.end_on - int(time())).strftime("%M")} минут</u></b>')
             markup = kb.start_builder.as_markup()
-        elif user.discount:
-            message_text += f'\n\U00002705 Скидка {user.discount}% активна'
-            markup = kb.start_noname_builder.as_markup()
         elif user.end_on:
             message_text += (f'\nПодписка <b>закончилась <u>{datetime.utcfromtimestamp(user.end_on).strftime("%d.%m.%Y")}'
-                             f'</u></b>\nПродлите подписку и продолжайте пользоваться интернетом без ограничений')
+                             f'</u></b>\nАктивируйте новую чтобы продолжить пользоваться интернетом без ограничений')
             markup = kb.start_builder.as_markup()
     else:
-        message_text += f'\nВам доступна <b>бесплатная пробная подписка</b>'
-        markup = kb.start_noname_builder.as_markup()
+            message_text += f'\n<b>бесплатная пробная подписка</b>'
+            markup = kb.start_noname_builder.as_markup()
     await callback_query.message.edit_text(message_text, reply_markup=markup)
 
 
