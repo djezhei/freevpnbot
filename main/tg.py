@@ -48,8 +48,8 @@ async def command_start_handler(message: Message) -> None:
 @dp.callback_query(lambda c: c.data == 'back')
 async def back_callback(callback_query: types.CallbackQuery):
     await callback_query.answer()
-    user = s.get(User, message.from_user.id)
-    message_text = f'Привет, {message.from_user.username}'
+    user = s.get(User, callback_query.from_user.id)
+    message_text = f'Привет, {callback_query.from_user.username}'
     if user:
         if user.is_active:
             message_text += (f'\nПодписка <b>активна еще <u>'
