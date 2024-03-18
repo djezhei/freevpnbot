@@ -1,0 +1,14 @@
+services:
+
+  vpn_database:
+    image: postgres:16.1-alpine3.19
+    restart: always
+    volumes:
+      - ~/.pg/pg_data/fvpnbot_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASS}
+      - PGPORT=${DB_PORT}
+    ports:
+      - "${DB_PORT}:${DB_PORT}"
