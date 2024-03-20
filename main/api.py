@@ -66,3 +66,4 @@ def delete_client(utid: str, server: ProxyServer) -> None:
     api_delete_cli_url = f'{server.protocol}://{server.host}:{server.api_port}{api_delete_cli_path}'
     r = requests.post(api_delete_cli_url, headers=headers)
     # if not r.json()['success']:
+

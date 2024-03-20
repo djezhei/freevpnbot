@@ -5,7 +5,7 @@ from sqlalchemy.orm import mapped_column
 from sqlalchemy.orm import relationship
 from sqlalchemy.types import BigInteger
 from time import time
-from typing import Any
+from typing import Any, List
 from uuid import UUID, uuid4
 
 
@@ -19,7 +19,8 @@ class User(Base):
     utid: Mapped[int] = mapped_column(BigInteger, primary_key=True, unique=True, nullable=False)
     is_active: Mapped[bool]
     end_on: Mapped[int] = mapped_column(BigInteger, nullable=True)
-    proxy_server: Mapped[int] = mapped_column(ForeignKey('proxy_servers.id'), nullable=True)
+    proxy_server_id: Mapped[int] = mapped_column(ForeignKey('proxy_servers.id'), nullable=True)
+    proxy_server: Mapped['ProxyServer'] = relationship(back_populates='user')
     vpn_url: Mapped[str] = mapped_column(nullable=True)
 
     def __repr__(self) -> str:
@@ -69,6 +70,7 @@ class ProxyServer(Base):
     inbound_id: Mapped[int]
     users_count: Mapped[int] = mapped_column(default=0)
     cookie: Mapped[str] = mapped_column(nullable=True)
+    user: Mapped[List['User']] = relationship(back_populates='proxy_server')
 
     def __repr__(self) -> str:
         return f'ProxyServer: {self.host=}, {self.api_port=}, {self.users_count=}'

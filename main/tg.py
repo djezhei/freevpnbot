@@ -34,11 +34,11 @@ async def command_start_handler(message: Message) -> None:
                              f'{datetime.utcfromtimestamp(user.end_on - int(time())).strftime("%M")} минут</u></b>')
             markup = kb.start_builder.as_markup()
         elif user.end_on:
-            message_text += (f'\nПодписка <b>закончилась <u>{datetime.utcfromtimestamp(user.end_on).strftime("%d.%m.%Y")}'
-                             f'</u></b>\nАктивируйте новую чтобы продолжить пользоваться интернетом без ограничений')
+            message_text += (f'\nПодписка <b>закончилась.<u>'
+                             f'</u></b>Активируйте новую чтобы продолжить пользоваться интернетом без ограничений')
             markup = kb.start_builder.as_markup()
     else:
-            message_text += f'\n<b>бесплатная пробная подписка</b>'
+            message_text += f'\nПопробуй подключиться - <b>это бесплатно</b>'
             markup = kb.start_noname_builder.as_markup()
     await message.delete()
     global LAST_MESSAGE
@@ -56,11 +56,11 @@ async def back_callback(callback_query: types.CallbackQuery):
                              f'{datetime.utcfromtimestamp(user.end_on - int(time())).strftime("%M")} минут</u></b>')
             markup = kb.start_builder.as_markup()
         elif user.end_on:
-            message_text += (f'\nПодписка <b>закончилась <u>{datetime.utcfromtimestamp(user.end_on).strftime("%d.%m.%Y")}'
-                             f'</u></b>\nАктивируйте новую чтобы продолжить пользоваться интернетом без ограничений')
+            message_text += (f'\nПодписка <b>закончилась.<u>'
+                             f'</u></b>Активируйте новую чтобы продолжить пользоваться интернетом без ограничений')
             markup = kb.start_builder.as_markup()
     else:
-            message_text += f'\n<b>бесплатная пробная подписка</b>'
+            message_text += f'\nПопробуй подключиться - <b>это бесплатно</b>'
             markup = kb.start_noname_builder.as_markup()
     await callback_query.message.edit_text(message_text, reply_markup=markup)
 
@@ -69,7 +69,7 @@ async def back_callback(callback_query: types.CallbackQuery):
 async def get_my_sub(callback_query: types.CallbackQuery):
     await callback_query.answer()
     user = s.get(User, callback_query.from_user.id)
-    if user:
+    if user.is_active:
         await callback_query.message.edit_text(
             f'<b>Ключ</b> для подключения:\n\n<code>{user.vpn_url}</code>\n\n<a href="https://telegra.ph/Podklyuchenie'
             '-na-iOS-11-20">Подключение на iOS</a>\n'
