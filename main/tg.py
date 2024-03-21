@@ -30,8 +30,15 @@ async def command_start_handler(message: Message) -> None:
     message_text = f'Привет, {message.from_user.username}'
     if user:
         if user.is_active:
+            unix_sub_duration = user.end_on - int(time())
+            if unix_sub_duration < 3600:
+                sub_duration = f'{unix_sub_duration // 60} минут'
+            elif unix_sub_duration < 86400:
+                sub_duration = f'{unix_sub_duration // 3600} часов'
+            else:
+                sub_duration = f'{unix_sub_duration // 86400} дней'
             message_text += (f'\nПодписка <b>активна еще <u>'
-                             f'{datetime.utcfromtimestamp(user.end_on - int(time())).strftime("%M")} минут</u></b>')
+                             f'{sub_duration}</u></b>')
             markup = kb.start_builder.as_markup()
         elif user.end_on:
             message_text += (f'\nПодписка <b>закончилась.<u>'
@@ -52,8 +59,15 @@ async def back_callback(callback_query: types.CallbackQuery):
     message_text = f'Привет, {callback_query.from_user.username}'
     if user:
         if user.is_active:
+            unix_sub_duration = user.end_on - int(time())
+            if unix_sub_duration < 3600:
+                sub_duration = f'{unix_sub_duration // 60} минут'
+            elif unix_sub_duration < 86400:
+                sub_duration = f'{unix_sub_duration // 3600} часов'
+            else:
+                sub_duration = f'{unix_sub_duration // 86400} дней'
             message_text += (f'\nПодписка <b>активна еще <u>'
-                             f'{datetime.utcfromtimestamp(user.end_on - int(time())).strftime("%M")} минут</u></b>')
+                             f'{sub_duration}</u></b>')
             markup = kb.start_builder.as_markup()
         elif user.end_on:
             message_text += (f'\nПодписка <b>закончилась.<u>'
@@ -69,7 +83,7 @@ async def back_callback(callback_query: types.CallbackQuery):
 async def get_my_sub(callback_query: types.CallbackQuery):
     await callback_query.answer()
     user = s.get(User, callback_query.from_user.id)
-    if user.is_active:
+    if user and user.is_active:
         await callback_query.message.edit_text(
             f'<b>Ключ</b> для подключения:\n\n<code>{user.vpn_url}</code>\n\n<a href="https://telegra.ph/Podklyuchenie'
             '-na-iOS-11-20">Подключение на iOS</a>\n'
