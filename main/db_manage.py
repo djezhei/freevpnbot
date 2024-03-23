@@ -41,3 +41,7 @@ def start_db_management() -> None:
     while True:
         check_expired_subs()
         sleep(60)
+
+
+if __name__ == '__main__':
+    start_db_management()
