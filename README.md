@@ -1,1 +1,4 @@
-Free temporary access to the proxy server via Telegram.
+
+# freeVPN
+
+Free telegram bot for obtaining a key to connect to a proxy server using VLESS protocol.
