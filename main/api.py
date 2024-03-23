@@ -24,6 +24,9 @@ def authorization(login_url: str) -> str:
 
 
 def get_user_vpn_url(utid: str, protocol:str, host: str, api_port: int, user_port: int, inbound_id: int, cookie: str) -> str:
+    """
+    Generates a user vpn_url to connect to the proxy server.
+    """
     api_inbounds_url = f'{protocol}://{host}:{api_port}{settings.API_INBOUNDS}/{inbound_id}'
     headers = {'cookie': cookie}
     r = requests.get(
@@ -61,6 +64,9 @@ def add_vless_client(utid: str, server: ProxyServer, gb_limit: int = 0) -> str:
 
 
 def delete_client(utid: str, server: ProxyServer) -> None:
+    """
+    Delete client with utid from the proxy server.
+    """
     headers = {'cookie': server.cookie}
     api_delete_cli_path = settings.API_DELETE_CLI.format(inbound_id=server.inbound_id, utid=utid)
     api_delete_cli_url = f'{server.protocol}://{server.host}:{server.api_port}{api_delete_cli_path}'

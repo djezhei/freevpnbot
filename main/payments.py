@@ -9,6 +9,9 @@ from settings import YOO_TOKEN, YOO_RECEIVER, YOO_SUCCESS_URL
 
 
 def create_payment_form(utid: int, sub_cost: int) -> str:
+    """
+    Return payment url for user with utid.
+    """
     uuid = uuid4()
     s.execute(insert(Payment).values(uuid=uuid, utid=utid))
     s.commit()
@@ -25,6 +28,9 @@ def create_payment_form(utid: int, sub_cost: int) -> str:
 
 
 def check_payment(utid: int) -> bool:
+    """
+    Return True if the payment has been completed, False otherwise.
+    """
     user_payments = s.scalars(select(Payment).where(Payment.utid == utid).where(Payment.is_purchased == False))
     client = Client(YOO_TOKEN)
     for user_payment in user_payments:
