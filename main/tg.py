@@ -109,7 +109,7 @@ async def buy_sub_callback(callback_query: types.CallbackQuery):
     sub_cost = int(callback_query.data[2:])
     payment_url = payments.create_payment_form(callback_query.from_user.id, sub_cost)
     await callback_query.message.edit_text(
-        f'</b>\nК оплате: <b>{sub_cost}</b> руб.',
+        f'К оплате: <b>{sub_cost}</b> руб.',
         reply_markup=kb.get_payment_kb(payment_url)
     )
 

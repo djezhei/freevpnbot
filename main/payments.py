@@ -38,7 +38,6 @@ def check_payment(utid: int) -> bool:
         history = client.operation_history(label=str(user_payment.uuid))
         for operation in history.operations:
             if operation.status == 'success':
-                give_sub_to_user(utid, user_payment.sub_type)
                 user_payment.purchased_at = int(time())
                 user_payment.is_purchased = True
                 s.commit()

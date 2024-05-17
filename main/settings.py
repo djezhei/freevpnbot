@@ -2,8 +2,6 @@ import os
 from dotenv import load_dotenv
 
 
-REFERAL_DISCOUNT=10
-
 PANEL_PATH = '/8876'
 API_LOGIN_PATH = f'{PANEL_PATH}/login'
 API_INBOUNDS = f'{PANEL_PATH}/panel/api/inbounds/get'
